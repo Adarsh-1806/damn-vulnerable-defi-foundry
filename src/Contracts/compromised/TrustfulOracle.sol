@@ -122,3 +122,4 @@ contract TrustfulOracle is AccessControlEnumerable {
         return arrayOfNumbers;
     }
 }
+
